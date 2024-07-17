@@ -75,11 +75,12 @@ public class PrintContent {
                 }
 
                 if (charset == null || charset.isEmpty()) {
-                    esc.addText(content, StandardCharsets.UTF_8);
+                    esc.addText(content, "UTF-8");
+                    Log.e(TAG, "******************* x: " + conetnt.getBytes("UTF-8"));
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
-                    Log.e(TAG, "******************* x: " + conetnt.getBytes(StandardCharsets.UTF_8));
-                    esc.addArrayToCommand(conetnt.getBytes(StandardCharsets.UTF_8));
+                    Log.e(TAG, "******************* x: " + conetnt.getBytes(charset));
+                    esc.addArrayToCommand(conetnt, charset);
                 }
 
 
