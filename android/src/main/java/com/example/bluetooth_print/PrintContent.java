@@ -81,6 +81,11 @@ public class PrintContent {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
                     Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)));
                     esc.addText(content, charset);
+                    byte[] bytes = new byte[]{80, 111, 108, 105, 115, 104, 32, 104, 97, 115, 32, (byte) 195, (byte) 179, (byte) 197, (byte) 155, (byte) 196, (byte) 135, (byte) 197, (byte) 130};
+                    esc.command.add(bytes);
+                    for (int i = 0; i < byteVector.size(); i++) {
+                        esc.command.add(byteVector.get(i));
+                    }
                     Vector<Byte> byteVector = esc.getCommand();
                     byte[] byteArray = new byte[byteVector.size()];
                     for (int i = 0; i < byteVector.size(); i++) {
