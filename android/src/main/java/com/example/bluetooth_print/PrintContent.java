@@ -10,6 +10,7 @@ import com.gprinter.command.EscCommand;
 import com.gprinter.command.LabelCommand;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -75,12 +76,11 @@ public class PrintContent {
                 }
 
                 if (charset == null || charset.isEmpty()) {
-                    esc.addText(content, "UTF-8");
-                    Log.e(TAG, "******************* x: " + conetnt.getBytes("UTF-8"));
+                    esc.addText(content, StandardCharsets.UTF_8);
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
-                    Log.e(TAG, "******************* x: " + conetnt.getBytes(charset));
-                    esc.addArrayToCommand(conetnt, charset);
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)));
+                    esc.addArrayToCommand(content.getBytes(StandardCharsets.UTF_8));
                 }
 
 
