@@ -11,6 +11,7 @@ import com.gprinter.command.LabelCommand;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -97,7 +98,7 @@ public class PrintContent {
                 // 设置条码宽窄比为2
                 esc.addSetBarcodeWidth((byte) 2);
                 // 打印Code128码
-                esc.addCODE128(esc.genCodeB(content));
+                esc.addCODE128(content);
             } else if ("qrcode".equals(type)) {
                 // 设置纠错等级
                 esc.addSelectErrorCorrectionLevelForQRCode((byte) 0x31);
