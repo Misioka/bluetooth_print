@@ -81,6 +81,7 @@ public class PrintContent {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
                     Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)));
                     esc.addText(content, charset);
+                    Log.e(TAG, "******************* x: " + Arrays.toString(esc.getCommand()));
                 }
 
 
