@@ -3,11 +3,9 @@ package com.example.bluetooth_print;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.src.main.java.com.example.bluetooth_print.EscCommand;
+import android.src.main.java.com.example.bluetooth_print.LabelCommand;
 import android.util.Base64;
 import android.util.Log;
-
-import com.gprinter.command.CpclCommand;
-import com.gprinter.command.LabelCommand;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -202,11 +200,12 @@ public class PrintContent {
      * 面单打印对象转换
      */
     public static Vector<Byte> mapToCPCL(Map<String, Object> config, List<Map<String, Object>> list) {
-        CpclCommand cpcl = new CpclCommand();
-
-
-        Vector<Byte> datas = cpcl.getCommand();
-        return datas;
+//        CpclCommand cpcl = new CpclCommand();
+//
+//
+//        Vector<Byte> datas = cpcl.getCommand();
+//        return datas;
+        return null;
     }
 
 }
