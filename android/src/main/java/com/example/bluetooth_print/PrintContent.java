@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.src.main.java.com.example.bluetooth_print.EscCommand;
 import android.src.main.java.com.example.bluetooth_print.LabelCommand;
-import android.util.Base64;
 import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
@@ -151,7 +150,7 @@ public class PrintContent {
         // 设置打印方向
         tsc.addDirection(LabelCommand.DIRECTION.FORWARD, LabelCommand.MIRROR.NORMAL);
         // 开启带Response的打印，用于连续打印
-        tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
+//        tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
         // 设置原点坐标
         tsc.addReference(0, 0);
         //设置浓度
