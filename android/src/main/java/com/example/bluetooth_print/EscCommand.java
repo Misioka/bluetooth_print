@@ -50,6 +50,7 @@ public class EscCommand {
 
     private void addStrToCommand(String str, String charset) {
         byte[] bs = null;
+        Log.d("EscCommand", "str" + str + "charset:" + charset);
         if (!str.equals("")) {
             try {
                 bs = str.getBytes(charset);

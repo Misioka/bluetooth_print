@@ -77,7 +77,10 @@ public class PrintContent {
                     esc.addText(content, "UTF-8");
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
-                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.ISO_8859_1)));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16)));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16BE)));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16LE)));
                     esc.addText(content, charset);
                     byte[] bytes = new byte[]{80, 111, 108, 105, 115, 104, 32, 104, 97, 115, 32, (byte) 195, (byte) 179, (byte) 197, (byte) 155, (byte) 196, (byte) 135, (byte) 197, (byte) 130};
                     esc.addArrayToCommand(bytes);
