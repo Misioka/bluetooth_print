@@ -1,16 +1,14 @@
-package com.example.bluetooth_print
+package com.example.bluetooth_print;
 
-enum class PrinterCommand {
+public enum PrinterCommand {
     /**
      * ESC指令
      */
     ESC,
-
     /**
      * TSC指令
      */
     TSC,
-
     /**
      * CPCL指令
      */
