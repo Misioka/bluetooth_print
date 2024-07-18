@@ -78,7 +78,7 @@ public class PrintContent {
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
                     Log.e(TAG, "******************* x: " + content.toByteArray(charset));
-                    esc.addArrayToCommand(content.toByteArray(charset));
+                    esc.addUserCommand(content.toByteArray(charset));
                 }
 
 
