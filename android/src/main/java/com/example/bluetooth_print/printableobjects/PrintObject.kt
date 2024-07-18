@@ -1,4 +1,4 @@
-package com.example.bluetooth_print;
+package com.example.bluetooth_print.print;
 
 import java.nio.charset.Charset
 

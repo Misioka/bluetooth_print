@@ -1,102 +1,117 @@
-package com.example.bluetooth_print;
+package com.example.bluetooth_print
 
-import android.util.Log;
+import android.util.Log
+import java.util.ArrayDeque
+import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
-import java.util.ArrayDeque;
-import java.util.concurrent.*;
+class ThreadPool private constructor() {
+    private var mActive: Runnable? = null
 
-
-public class ThreadPool {
-
-    private Runnable mActive;
-
-    private static ThreadPool threadPool;
     /**
      * java线程池
      */
-    private ThreadPoolExecutor threadPoolExecutor;
-
-    /**
-     * 系统最大可用线程
-     */
-    private final static int CPU_AVAILABLE = Runtime.getRuntime().availableProcessors();
-
-    /**
-     * 最大线程数
-     */
-    private final static int MAX_POOL_COUNTS = CPU_AVAILABLE * 2 + 1;
-
-    /**
-     * 线程存活时间
-     */
-    private final static long AVAILABLE = 1L;
-
-    /**
-     * 核心线程数
-     */
-    private final static int CORE_POOL_SIZE = CPU_AVAILABLE + 1;
+    private var threadPoolExecutor: ThreadPoolExecutor?
 
     /**
      * 线程池缓存队列
      */
-    private BlockingQueue<Runnable> mWorkQueue = new ArrayBlockingQueue<>(CORE_POOL_SIZE);
+    private val mWorkQueue: BlockingQueue<Runnable> = ArrayBlockingQueue(CORE_POOL_SIZE)
 
-    private ArrayDeque<Runnable> mArrayDeque = new ArrayDeque<>();
+    private val mArrayDeque = ArrayDeque<Runnable>()
 
-    private ThreadFactory threadFactory = new ThreadFactoryBuilder("ThreadPool");
+    private val threadFactory: ThreadFactory = ThreadFactoryBuilder("ThreadPool")
 
-    private ThreadPool() {
-        threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_COUNTS, AVAILABLE, TimeUnit.SECONDS, mWorkQueue,threadFactory);
+    init {
+        threadPoolExecutor = ThreadPoolExecutor(
+            CORE_POOL_SIZE,
+            MAX_POOL_COUNTS,
+            AVAILABLE,
+            TimeUnit.SECONDS,
+            mWorkQueue,
+            threadFactory
+        )
     }
 
-    public static ThreadPool getInstantiation() {
-        if (threadPool == null) {
-            threadPool = new ThreadPool();
-        }
-        return threadPool;
-    }
-
-    public void addParallelTask(Runnable runnable) { //并行线程
+    fun addParallelTask(runnable: Runnable?) { //并行线程
         if (runnable == null) {
-            throw new NullPointerException("addTask(Runnable runnable)传入参数为空");
+            throw NullPointerException("addTask(Runnable runnable)传入参数为空")
         }
-        if (threadPoolExecutor.getActiveCount()<MAX_POOL_COUNTS) {
-            Log.i("Lee","目前有"+threadPoolExecutor.getActiveCount()+"个线程正在进行中,有"+mWorkQueue.size()+"个任务正在排队");
-          synchronized (this){
-              threadPoolExecutor.execute(runnable);
-          }
+        if (threadPoolExecutor!!.activeCount < MAX_POOL_COUNTS) {
+            Log.i(
+                "Lee",
+                "目前有" + threadPoolExecutor!!.activeCount + "个线程正在进行中,有" + mWorkQueue.size + "个任务正在排队"
+            )
+            synchronized(this) {
+                threadPoolExecutor!!.execute(runnable)
+            }
         }
     }
-    public synchronized void addSerialTask(final Runnable r) { //串行线程
+
+    @Synchronized
+    fun addSerialTask(r: Runnable?) { //串行线程
         if (r == null) {
-            throw new NullPointerException("addTask(Runnable runnable)传入参数为空");
+            throw NullPointerException("addTask(Runnable runnable)传入参数为空")
         }
-        mArrayDeque.offer(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    r.run();
-                } finally {
-                    scheduleNext();
-                }
+        mArrayDeque.offer(Runnable {
+            try {
+                r.run()
+            } finally {
+                scheduleNext()
             }
-        });
+        })
         // 第一次入队列时mActivie为空，因此需要手动调用scheduleNext方法
         if (mActive == null) {
-            scheduleNext();
-        }
-    }
-    private void scheduleNext() {
-        if ((mActive = mArrayDeque.poll()) != null) {
-            threadPoolExecutor.execute(mActive);
+            scheduleNext()
         }
     }
 
-    public void stopThreadPool() {
-        if (threadPoolExecutor != null) {
-            threadPoolExecutor.shutdown();
-            threadPoolExecutor = null;
-            threadPool = null;
+    private fun scheduleNext() {
+        if ((mArrayDeque.poll().also { mActive = it }) != null) {
+            threadPoolExecutor!!.execute(mActive)
         }
+    }
+
+    fun stopThreadPool() {
+        if (threadPoolExecutor != null) {
+            threadPoolExecutor!!.shutdown()
+            threadPoolExecutor = null
+            threadPool = null
+        }
+    }
+
+    companion object {
+        private var threadPool: ThreadPool? = null
+
+        /**
+         * 系统最大可用线程
+         */
+        private val CPU_AVAILABLE = Runtime.getRuntime().availableProcessors()
+
+        /**
+         * 最大线程数
+         */
+        private val MAX_POOL_COUNTS = CPU_AVAILABLE * 2 + 1
+
+        /**
+         * 线程存活时间
+         */
+        private const val AVAILABLE = 1L
+
+        /**
+         * 核心线程数
+         */
+        private val CORE_POOL_SIZE = CPU_AVAILABLE + 1
+
+        val instantiation: ThreadPool?
+            get() {
+                if (threadPool == null) {
+                    threadPool = ThreadPool()
+                }
+                return threadPool
+            }
     }
 }

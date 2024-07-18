@@ -1,54 +1,56 @@
-package com.example.bluetooth_print;
+package com.example.bluetooth_print
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
-import android.util.Base64;
-
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import android.graphics.Paint
+import android.util.Log
+import com.example.bluetooth_print.print.PrintDocument
+import com.example.bluetooth_print.print.PrinterType
+import java.io.UnsupportedEncodingException
+import java.util.Vector
 
 /**
  * @author thon
  */
-public class PrintContent {
-    private static final String TAG = PrintContent.class.getSimpleName();
+object PrintContent {
+    private val TAG: String = PrintContent::class.java.simpleName
 
     /**
      * 票据打印对象转换
      */
-    public static Vector<Byte> mapToReceipt(Map<String, Object> config, List<Map<String, Object>> list) throws UnsupportedEncodingException {
+    @Throws(UnsupportedEncodingException::class)
+    fun mapToReceipt(config: Map<String?, Any?>, list: List<Map<String?, Any?>?>?): Vector<Byte> {
 //        EscCommand esc = new EscCommand();
 //
 //        //初始化打印机
 //        esc.addInitializePrinter();
 //        //打印走纸多少个单位
 //        esc.addPrintAndFeedLines((byte) 1);
-        PrintDocument document = new PrintDocument(
-                "ščřžČŘŽÝ",
-                PrinterType.PTP,
-                PrintDocument.DOCUMENT_4_INCH_WIDTH
-        );
+        val document = PrintDocument(
+            "ščřžČŘŽÝ",
+            PrinterType.PTP,
+            PrintDocument.DOCUMENT_4_INCH_WIDTH
+        )
 
-        String charset = (String) (config.get("charset") == null ? "" : config.get("charset"));
-        Log.e(TAG, "******************* charset: " + charset);
+        val charset = (if (config["charset"] == null) "" else config["charset"]) as String
+        Log.e(TAG, "******************* charset: $charset")
 
-        document.appendText(String.format("%s",
-                        "ščřžČŘŽÝ"),
-                PrintDocument.Font.HEADLINE, 0, Paint.Align.LEFT);
+        document.appendText(
+            String.format(
+                "%s",
+                "ščřžČŘŽÝ"
+            ),
+            PrintDocument.Font.HEADLINE, 0, Paint.Align.LEFT
+        )
 
-        document.appendLine(PrintDocument.Font.NORMAL.getCharHeight() / 4);
+        document.appendLine(PrintDocument.Font.NORMAL.charHeight / 4)
 
-        document.appendLine(PrintDocument.Font.NORMAL.getCharHeight() / 4);
+        document.appendLine(PrintDocument.Font.NORMAL.charHeight / 4)
 
-        byte[] byteArray = document.generatePrinterCommands(1, PrinterType.PTP, false);
-        Vector<Byte> byteVector = new Vector<>(byteArray.length);
-        for (byte b : byteArray) {
-            byteVector.add(b);
+        val byteArray = document.generatePrinterCommands(1, PrinterType.PTP, false)
+        val byteVector = Vector<Byte>(byteArray.size)
+        for (b in byteArray) {
+            byteVector.add(b)
         }
-        return byteVector;
+        return byteVector
 
         // {type:'text|barcode|qrcode|image', content:'', size:4, align: 0|1|2, weight: 0|1, width:0|1, height:0|1, underline:0|1, linefeed: 0|1}
 //        for (Map<String, Object> m : list) {
@@ -156,7 +158,7 @@ public class PrintContent {
     /**
      * 标签打印对象转换
      */
-    public static Vector<Byte> mapToLabel(Map<String, Object> config, List<Map<String, Object>> list) {
+    fun mapToLabel(config: Map<String?, Any?>?, list: List<Map<String?, Any?>?>?): Vector<Byte>? {
 //        LabelCommand tsc = new LabelCommand();
 //
 //        int width = (int) (config.get("width") == null ? 60 : config.get("width")); // 单位：mm
@@ -213,19 +215,18 @@ public class PrintContent {
 //        tsc.addCashdrwer(LabelCommand.FOOT.F5, 255, 255);
 //        // 发送数据
 //        return tsc.getCommand();
-        return null;
+        return null
     }
 
     /**
      * 面单打印对象转换
      */
-    public static Vector<Byte> mapToCPCL(Map<String, Object> config, List<Map<String, Object>> list) {
+    fun mapToCPCL(config: Map<String?, Any?>?, list: List<Map<String?, Any?>?>?): Vector<Byte>? {
 //        CpclCommand cpcl = new CpclCommand();
 //
 //
 //        Vector<Byte> datas = cpcl.getCommand();
 //        return datas;
-        return null;
+        return null
     }
-
 }
