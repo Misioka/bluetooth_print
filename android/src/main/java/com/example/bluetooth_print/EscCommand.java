@@ -51,7 +51,7 @@ public class EscCommand {
         byte[] bs = null;
         if (!str.equals("")) {
             try {
-                bs = str.getBytes("GB2312");
+                bs = str.getBytes(charset);
             } catch (UnsupportedEncodingException var5) {
                 var5.printStackTrace();
             }
