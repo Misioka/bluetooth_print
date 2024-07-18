@@ -2,13 +2,13 @@ package com.example.bluetooth_print;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.util.Base64;
 import android.src.main.java.com.example.bluetooth_print.EscCommand;
 import android.src.main.java.com.example.bluetooth_print.LabelCommand;
-import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
