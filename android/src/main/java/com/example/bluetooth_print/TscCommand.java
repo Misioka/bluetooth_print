@@ -4,7 +4,6 @@ package android.src.main.java.com.example.bluetooth_print;
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
 //
-import android.src.main.java.com.example.bluetooth_print.EscCommand.ENABLE;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 

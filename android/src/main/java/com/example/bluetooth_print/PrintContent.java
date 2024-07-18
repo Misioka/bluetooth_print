@@ -2,11 +2,12 @@ package com.example.bluetooth_print;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.src.main.java.com.example.bluetooth_print.EscCommand;
 import android.util.Log;
 import android.util.Base64;
-import android.src.main.java.com.example.bluetooth_print.EscCommand;
 import android.src.main.java.com.example.bluetooth_print.LabelCommand;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +23,7 @@ public class PrintContent {
     /**
      * 票据打印对象转换
      */
-    public static Vector<Byte> mapToReceipt(Map<String, Object> config, List<Map<String, Object>> list) {
+    public static Vector<Byte> mapToReceipt(Map<String, Object> config, List<Map<String, Object>> list) throws UnsupportedEncodingException {
         EscCommand esc = new EscCommand();
 
         //初始化打印机
@@ -77,13 +78,13 @@ public class PrintContent {
                     esc.addText(content, "UTF-8");
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
-                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.ISO_8859_1)));
-                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16)));
-                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16BE)));
-                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes(StandardCharsets.UTF_16LE)));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes("windows-1250")));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes("cp1250")));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes("windows-1251")));
+                    Log.e(TAG, "******************* x: " + Arrays.toString(content.getBytes("cp1251")));
                     esc.addText(content, charset);
                     byte[] bytes = new byte[]{80, 111, 108, 105, 115, 104, 32, 104, 97, 115, 32, (byte) 195, (byte) 179, (byte) 197, (byte) 155, (byte) 196, (byte) 135, (byte) 197, (byte) 130};
-                    esc.addArrayToCommand(bytes);
+                    esc.addUserCommand(bytes);
 //                    Log.e(TAG, "******************* x: " + Arrays.toString(byteArray));
                 }
 
@@ -132,7 +133,7 @@ public class PrintContent {
         byte[] bytes = {0x1D, 0x72, 0x01};
         //添加用户指令
         esc.addUserCommand(bytes);
-
+        Log.d("esc",esc.getCommand().toString());
         return esc.getCommand();
     }
 
