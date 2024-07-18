@@ -1,4 +1,4 @@
-package android.src.main.java.com.example.bluetooth_print
+package com.example.bluetooth_print;
 
 enum class PrinterType(val charset: String, val ratios: HashMap<String, IntArray>, vararg val printerNames: String) {
     ZEBRA("cp1250",
