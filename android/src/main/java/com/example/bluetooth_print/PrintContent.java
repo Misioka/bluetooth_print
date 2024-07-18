@@ -27,7 +27,8 @@ public class PrintContent {
 
         //初始化打印机
         esc.addInitializePrinter();
-        //打印走纸多少个单位
+
+        esc.addUserCommand(new byte[]{0x1c, 0x26, 0x1b, 0x39, 0x01});
         esc.addPrintAndFeedLines((byte) 1);
 
         String charset = (String) (config.get("charset") == null ? "" : config.get("charset"));
@@ -78,7 +79,7 @@ public class PrintContent {
                 } else {
                     Log.e(TAG, "******************* x: " + content + ", charset: " + charset);
                     Log.e(TAG, "******************* x: " + content.toByteArray(charset));
-                    esc.addArrayToCommand(content.toByteArray(charset));
+                    esc.addText(content, charset);
                 }
 
 
