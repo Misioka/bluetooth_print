@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -52,6 +53,7 @@ public class EscCommand {
         if (!str.equals("")) {
             try {
                 bs = str.getBytes(charset);
+                Log.d("EscCommand", "bs.length" + bs.length + "bytes" + Arrays.toString(bs) + "charset:" + charset);
             } catch (UnsupportedEncodingException var5) {
                 var5.printStackTrace();
             }
