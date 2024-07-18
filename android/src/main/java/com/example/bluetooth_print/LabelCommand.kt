@@ -1,348 +1,371 @@
-package android.src.main.java.com.example.bluetooth_print;
+package android.src.main.java.com.example.bluetooth_print
 
-import android.graphics.Bitmap;
-import android.util.Log;
-
-import java.io.UnsupportedEncodingException;
-import java.util.Vector;
+import android.graphics.Bitmap
+import android.src.main.java.com.example.bluetooth_print.EscCommand.ENABLE
+import android.util.Log
+import java.io.UnsupportedEncodingException
+import java.util.Vector
 
 /**
  * author: Bill
  * created on: 17/11/24 下午4:47
  * description: 标签机指令集
  */
-public class LabelCommand {
-    private static final String DEBUG_TAG = "LabelCommand";
-    Vector<Byte> Command = null;
+class LabelCommand {
+    var command: Vector<Byte?>? = null
 
-    public LabelCommand() {
-        this.Command = new Vector();
+    constructor() {
+        this.command = Vector<Byte?>()
     }
 
-    public LabelCommand(int width, int height, int gap) {
-        this.Command = new Vector(4096, 1024);
-        this.addSize(width, height);
-        this.addGap(gap);
+    constructor(width: Int, height: Int, gap: Int) {
+        this.command = Vector<Byte?>(4096, 1024)
+        this.addSize(width, height)
+        this.addGap(gap)
     }
 
-    public void clrCommand() {
-        this.Command.clear();
+    fun clrCommand() {
+        command!!.clear()
     }
 
-    private void addStrToCommand(String str) {
-        byte[] bs = null;
-        if (!str.equals("")) {
+    private fun addStrToCommand(str: String) {
+        var bs: ByteArray? = null
+        if (str != "") {
             try {
-                bs = str.getBytes("GB2312");
-            } catch (UnsupportedEncodingException var4) {
-                var4.printStackTrace();
+                bs = str.toByteArray(charset("GB2312"))
+            } catch (var4: UnsupportedEncodingException) {
+                var4.printStackTrace()
             }
 
-            for (int i = 0; i < bs.length; ++i) {
-                this.Command.add(Byte.valueOf(bs[i]));
+            for (i in bs!!.indices) {
+                command!!.add(bs[i])
             }
         }
-
     }
 
-    public void addGap(int gap) {
-        new String();
-        String str = "GAP " + gap + " mm," + 0 + " mm" + "\r\n";
-        this.addStrToCommand(str);
+    fun addGap(gap: Int) {
+        ""
+        val str = "GAP $gap mm,0 mm\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addSize(int width, int height) {
-        new String();
-        String str = "SIZE " + width + " mm," + height + " mm" + "\r\n";
-        this.addStrToCommand(str);
+    fun addSize(width: Int, height: Int) {
+        ""
+        val str = "SIZE $width mm,$height mm\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addCashdrwer(LabelCommand.FOOT m, int t1, int t2) {
-        new String();
-        String str = "CASHDRAWER " + m.getValue() + "," + t1 + "," + t2 + "\r\n";
-        this.addStrToCommand(str);
+    fun addCashdrwer(m: FOOT, t1: Int, t2: Int) {
+        ""
+        val str = "CASHDRAWER " + m.value + "," + t1 + "," + t2 + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addOffset(int offset) {
-        new String();
-        String str = "OFFSET " + offset + " mm" + "\r\n";
-        this.addStrToCommand(str);
+    fun addOffset(offset: Int) {
+        ""
+        val str = "OFFSET $offset mm\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addSpeed(LabelCommand.SPEED speed) {
-        new String();
-        String str = "SPEED " + speed.getValue() + "\r\n";
-        this.addStrToCommand(str);
+    fun addSpeed(speed: SPEED) {
+        ""
+        val str = "SPEED " + speed.value + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addDensity(LabelCommand.DENSITY density) {
-        new String();
-        String str = "DENSITY " + density.getValue() + "\r\n";
-        this.addStrToCommand(str);
+    fun addDensity(density: DENSITY) {
+        ""
+        val str = "DENSITY " + density.value + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addDirection(LabelCommand.DIRECTION direction, LabelCommand.MIRROR mirror) {
-        new String();
-        String str = "DIRECTION " + direction.getValue() + ',' + mirror.getValue() + "\r\n";
-        this.addStrToCommand(str);
+    fun addDirection(direction: DIRECTION, mirror: MIRROR) {
+        ""
+        val str = "DIRECTION " + direction.value + ',' + mirror.value + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addReference(int x, int y) {
-        new String();
-        String str = "REFERENCE " + x + "," + y + "\r\n";
-        this.addStrToCommand(str);
+    fun addReference(x: Int, y: Int) {
+        ""
+        val str = "REFERENCE $x,$y\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addShif(int shift) {
-        new String();
-        String str = "SHIFT " + shift + "\r\n";
-        this.addStrToCommand(str);
+    fun addShif(shift: Int) {
+        ""
+        val str = "SHIFT $shift\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addCls() {
-        new String();
-        String str = "CLS\r\n";
-        this.addStrToCommand(str);
+    fun addCls() {
+        ""
+        val str = "CLS\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addFeed(int dot) {
-        new String();
-        String str = "FEED " + dot + "\r\n";
-        this.addStrToCommand(str);
+    fun addFeed(dot: Int) {
+        ""
+        val str = "FEED $dot\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addBackFeed(int dot) {
-        new String();
-        String str = "BACKFEED " + dot + "\r\n";
-        this.addStrToCommand(str);
+    fun addBackFeed(dot: Int) {
+        ""
+        val str = "BACKFEED $dot\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addFormFeed() {
-        new String();
-        String str = "FORMFEED\r\n";
-        this.addStrToCommand(str);
+    fun addFormFeed() {
+        ""
+        val str = "FORMFEED\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addHome() {
-        new String();
-        String str = "HOME\r\n";
-        this.addStrToCommand(str);
+    fun addHome() {
+        ""
+        val str = "HOME\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addPrint(int m, int n) {
-        new String();
-        String str = "PRINT " + m + "," + n + "\r\n";
-        this.addStrToCommand(str);
+    fun addPrint(m: Int, n: Int) {
+        ""
+        val str = "PRINT $m,$n\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addPrint(int m) {
-        new String();
-        String str = "PRINT " + m + "\r\n";
-        this.addStrToCommand(str);
+    fun addPrint(m: Int) {
+        ""
+        val str = "PRINT $m\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addCodePage(LabelCommand.CODEPAGE page) {
-        new String();
-        String str = "CODEPAGE " + page.getValue() + "\r\n";
-        this.addStrToCommand(str);
+    fun addCodePage(page: CODEPAGE) {
+        ""
+        val str = "CODEPAGE " + page.value + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addSound(int level, int interval) {
-        new String();
-        String str = "SOUND " + level + "," + interval + "\r\n";
-        this.addStrToCommand(str);
+    fun addSound(level: Int, interval: Int) {
+        ""
+        val str = "SOUND $level,$interval\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addLimitFeed(int n) {
-        new String();
-        String str = "LIMITFEED " + n + "\r\n";
-        this.addStrToCommand(str);
+    fun addLimitFeed(n: Int) {
+        ""
+        val str = "LIMITFEED $n\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addSelfTest() {
-        new String();
-        String str = "SELFTEST\r\n";
-        this.addStrToCommand(str);
+    fun addSelfTest() {
+        ""
+        val str = "SELFTEST\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addBar(int x, int y, int width, int height) {
-        new String();
-        String str = "BAR " + x + "," + y + "," + width + "," + height + "\r\n";
-        this.addStrToCommand(str);
+    fun addBar(x: Int, y: Int, width: Int, height: Int) {
+        ""
+        val str = "BAR $x,$y,$width,$height\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addText(int x, int y, LabelCommand.FONTTYPE font, LabelCommand.ROTATION rotation, LabelCommand.FONTMUL Xscal, LabelCommand.FONTMUL Yscal, String text) {
-        new String();
-        String str = "TEXT " + x + "," + y + "," + "\"" + font.getValue() + "\"" + "," + rotation.getValue() + "," + Xscal.getValue() + "," + Yscal.getValue() + "," + "\"" + text + "\"" + "\r\n";
-        this.addStrToCommand(str);
+    fun addText(
+        x: Int,
+        y: Int,
+        font: FONTTYPE,
+        rotation: ROTATION,
+        Xscal: FONTMUL,
+        Yscal: FONTMUL,
+        text: String
+    ) {
+        ""
+        val str =
+            "TEXT " + x + "," + y + "," + "\"" + font.value + "\"" + "," + rotation.value + "," + Xscal.value + "," + Yscal.value + "," + "\"" + text + "\"" + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void add1DBarcode(int x, int y, LabelCommand.BARCODETYPE type, int height, LabelCommand.READABEL readable, LabelCommand.ROTATION rotation, String content) {
-        int narrow = 2;
-        int width = 2;
-        new String();
-        String str = "BARCODE " + x + "," + y + "," + "\"" + type.getValue() + "\"" + "," + height + "," + readable.getValue() + "," + rotation.getValue() + "," + narrow + "," + width + "," + "\"" + content + "\"" + "\r\n";
-        this.addStrToCommand(str);
+    fun add1DBarcode(
+        x: Int,
+        y: Int,
+        type: BARCODETYPE,
+        height: Int,
+        readable: READABEL,
+        rotation: ROTATION,
+        content: String
+    ) {
+        val narrow = 2
+        val width = 2
+        ""
+        val str =
+            "BARCODE " + x + "," + y + "," + "\"" + type.value + "\"" + "," + height + "," + readable.value + "," + rotation.value + "," + narrow + "," + width + "," + "\"" + content + "\"" + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void add1DBarcode(int x, int y, LabelCommand.BARCODETYPE type, int height, LabelCommand.READABEL readable, LabelCommand.ROTATION rotation, int narrow, int width, String content) {
-        String str = "BARCODE " + x + "," + y + "," + "\"" + type.getValue() + "\"" + "," + height + "," + readable.getValue() + "," + rotation.getValue() + "," + narrow + "," + width + "," + "\"" + content + "\"" + "\r\n";
-        this.addStrToCommand(str);
+    fun add1DBarcode(
+        x: Int,
+        y: Int,
+        type: BARCODETYPE,
+        height: Int,
+        readable: READABEL,
+        rotation: ROTATION,
+        narrow: Int,
+        width: Int,
+        content: String
+    ) {
+        val str =
+            "BARCODE " + x + "," + y + "," + "\"" + type.value + "\"" + "," + height + "," + readable.value + "," + rotation.value + "," + narrow + "," + width + "," + "\"" + content + "\"" + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addBox(int x, int y, int xend, int yend, int thickness) {
-        new String();
-        String str = "BOX " + x + "," + y + "," + xend + "," + yend + "," + thickness + "\r\n";
-        this.addStrToCommand(str);
+    fun addBox(x: Int, y: Int, xend: Int, yend: Int, thickness: Int) {
+        ""
+        val str = "BOX $x,$y,$xend,$yend,$thickness\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addBitmap(int x, int y, LabelCommand.BITMAP_MODE mode, int nWidth, Bitmap b) {
+    fun addBitmap(x: Int, y: Int, mode: BITMAP_MODE, nWidth: Int, b: Bitmap?) {
         if (b != null) {
-            int width = (nWidth + 7) / 8 * 8;
-            int height = b.getHeight() * width / b.getWidth();
-            Log.d("BMP", "bmp.getWidth() " + b.getWidth());
-            Bitmap grayBitmap = GpUtils.toGrayscale(b);
-            Bitmap rszBitmap = GpUtils.resizeImage(grayBitmap, width, height);
-            byte[] src = GpUtils.bitmapToBWPix(rszBitmap);
-            height = src.length / width;
-            width /= 8;
-            String str = "BITMAP " + x + "," + y + "," + width + "," + height + "," + mode.getValue() + ",";
-            this.addStrToCommand(str);
-            byte[] codecontent = GpUtils.pixToLabelCmd(src);
+            var width = (nWidth + 7) / 8 * 8
+            var height: Int = b.getHeight() * width / b.getWidth()
+            Log.d("BMP", "bmp.getWidth() " + b.getWidth())
+            val grayBitmap: Bitmap = GpUtils.toGrayscale(b)
+            val rszBitmap: Bitmap = GpUtils.resizeImage(grayBitmap, width, height)
+            val src = GpUtils.bitmapToBWPix(rszBitmap)
+            height = src.size / width
+            width /= 8
+            val str = "BITMAP " + x + "," + y + "," + width + "," + height + "," + mode.value + ","
+            this.addStrToCommand(str)
+            val codecontent = GpUtils.pixToLabelCmd(src)
 
-            for (int k = 0; k < codecontent.length; ++k) {
-                this.Command.add(Byte.valueOf(codecontent[k]));
+            for (k in codecontent.indices) {
+                command!!.add(codecontent[k])
             }
 
-            Log.d("LabelCommand", "codecontent" + codecontent);
+            Log.d("LabelCommand", "codecontent$codecontent")
+        }
+    }
+
+    fun addErase(x: Int, y: Int, xwidth: Int, yheight: Int) {
+        ""
+        val str = "ERASE $x,$y,$xwidth,$yheight\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addReverse(x: Int, y: Int, xwidth: Int, yheight: Int) {
+        ""
+        val str = "REVERSE $x,$y,$xwidth,$yheight\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQRCode(x: Int, y: Int, level: EEC, cellwidth: Int, rotation: ROTATION, data: String) {
+        ""
+        val str =
+            "QRCODE " + x + "," + y + "," + level.value + "," + cellwidth + "," + 'A' + "," + rotation.value + "," + "\"" + data + "\"" + "\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQueryPrinterType() {
+        ""
+        val str = "~!T\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQueryPrinterStatus() {
+        command!!.add(27.toByte())
+        command!!.add(33.toByte())
+        command!!.add(63.toByte())
+    }
+
+    fun addResetPrinter() {
+        command!!.add(27.toByte())
+        command!!.add(33.toByte())
+        command!!.add(82.toByte())
+    }
+
+    fun addQueryPrinterLife() {
+        ""
+        val str = "~!@\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQueryPrinterMemory() {
+        ""
+        val str = "~!A\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQueryPrinterFile() {
+        ""
+        val str = "~!F\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addQueryPrinterCodePage() {
+        ""
+        val str = "~!I\r\n"
+        this.addStrToCommand(str)
+    }
+
+    fun addPeel(enable: ENABLE) {
+        var str = ""
+        if (enable.getValue().toInt() == 0) {
+            str = "SET PEEL " + enable.getValue() + "\r\n"
         }
 
+        this.addStrToCommand(str)
     }
 
-    public void addErase(int x, int y, int xwidth, int yheight) {
-        new String();
-        String str = "ERASE " + x + "," + y + "," + xwidth + "," + yheight + "\r\n";
-        this.addStrToCommand(str);
+    fun addTear(enable: ENABLE) {
+        ""
+        val str = "SET TEAR " + enable.getValue() + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addReverse(int x, int y, int xwidth, int yheight) {
-        new String();
-        String str = "REVERSE " + x + "," + y + "," + xwidth + "," + yheight + "\r\n";
-        this.addStrToCommand(str);
+    fun addCutter(enable: ENABLE) {
+        ""
+        val str = "SET CUTTER " + enable.getValue() + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addQRCode(int x, int y, LabelCommand.EEC level, int cellwidth, LabelCommand.ROTATION rotation, String data) {
-        new String();
-        String str = "QRCODE " + x + "," + y + "," + level.getValue() + "," + cellwidth + "," + 'A' + "," + rotation.getValue() + "," + "\"" + data + "\"" + "\r\n";
-        this.addStrToCommand(str);
+    fun addCutterBatch() {
+        val str = "SET CUTTER BATCH\r\n"
+        this.addStrToCommand(str)
     }
 
-    public Vector<Byte> getCommand() {
-        return this.Command;
+    fun addCutterPieces(number: Short) {
+        val str = "SET CUTTER $number\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addQueryPrinterType() {
-        new String();
-        String str = "~!T\r\n";
-        this.addStrToCommand(str);
+    fun addReprint(enable: ENABLE) {
+        ""
+        val str = "SET REPRINT " + enable.getValue() + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addQueryPrinterStatus() {
-        this.Command.add(Byte.valueOf((byte) 27));
-        this.Command.add(Byte.valueOf((byte) 33));
-        this.Command.add(Byte.valueOf((byte) 63));
+    fun addPrintKey(enable: ENABLE) {
+        ""
+        val str = "SET PRINTKEY " + enable.getValue() + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addResetPrinter() {
-        this.Command.add(Byte.valueOf((byte) 27));
-        this.Command.add(Byte.valueOf((byte) 33));
-        this.Command.add(Byte.valueOf((byte) 82));
+    fun addPrintKey(m: Int) {
+        ""
+        val str = "SET PRINTKEY $m\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addQueryPrinterLife() {
-        new String();
-        String str = "~!@\r\n";
-        this.addStrToCommand(str);
+    fun addPartialCutter(enable: ENABLE) {
+        ""
+        val str = "SET PARTIAL_CUTTER " + enable.getValue() + "\r\n"
+        this.addStrToCommand(str)
     }
 
-    public void addQueryPrinterMemory() {
-        new String();
-        String str = "~!A\r\n";
-        this.addStrToCommand(str);
+    fun addUserCommand(command: String) {
+        this.addStrToCommand(command)
     }
 
-    public void addQueryPrinterFile() {
-        new String();
-        String str = "~!F\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addQueryPrinterCodePage() {
-        new String();
-        String str = "~!I\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addPeel(EscCommand.ENABLE enable) {
-        String str = new String();
-        if (enable.getValue() == 0) {
-            str = "SET PEEL " + enable.getValue() + "\r\n";
-        }
-
-        this.addStrToCommand(str);
-    }
-
-    public void addTear(EscCommand.ENABLE enable) {
-        new String();
-        String str = "SET TEAR " + enable.getValue() + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addCutter(EscCommand.ENABLE enable) {
-        new String();
-        String str = "SET CUTTER " + enable.getValue() + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addCutterBatch() {
-        String str = "SET CUTTER BATCH\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addCutterPieces(short number) {
-        String str = "SET CUTTER " + number + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addReprint(EscCommand.ENABLE enable) {
-        new String();
-        String str = "SET REPRINT " + enable.getValue() + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addPrintKey(EscCommand.ENABLE enable) {
-        new String();
-        String str = "SET PRINTKEY " + enable.getValue() + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addPrintKey(int m) {
-        new String();
-        String str = "SET PRINTKEY " + m + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addPartialCutter(EscCommand.ENABLE enable) {
-        new String();
-        String str = "SET PARTIAL_CUTTER " + enable.getValue() + "\r\n";
-        this.addStrToCommand(str);
-    }
-
-    public void addUserCommand(String command) {
-        this.addStrToCommand(command);
-    }
-
-    public static enum BARCODETYPE {
+    enum class BARCODETYPE(val value: String) {
         CODE128("128"),
         CODE128M("128M"),
         EAN128("EAN128"),
@@ -371,36 +394,16 @@ public class LabelCommand {
         MSIC("MSIC"),
         PLESSEY("PLESSEY"),
         ITF14("ITF14"),
-        EAN14("EAN14");
-
-        private final String value;
-
-        private BARCODETYPE(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
+        EAN14("EAN14")
     }
 
-    public static enum BITMAP_MODE {
+    enum class BITMAP_MODE(val value: Int) {
         OVERWRITE(0),
         OR(1),
-        XOR(2);
-
-        private final int value;
-
-        private BITMAP_MODE(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        XOR(2)
     }
 
-    public static enum CODEPAGE {
+    enum class CODEPAGE(val value: Int) {
         PC437(437),
         PC850(850),
         PC852(852),
@@ -410,20 +413,10 @@ public class LabelCommand {
         WPC1250(1250),
         WPC1252(1252),
         WPC1253(1253),
-        WPC1254(1254);
-
-        private final int value;
-
-        private CODEPAGE(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        WPC1254(1254)
     }
 
-    public static enum DENSITY {
+    enum class DENSITY(val value: Int) {
         DNESITY0(0),
         DNESITY1(1),
         DNESITY2(2),
@@ -439,52 +432,22 @@ public class LabelCommand {
         DNESITY12(12),
         DNESITY13(13),
         DNESITY14(14),
-        DNESITY15(15);
-
-        private final int value;
-
-        private DENSITY(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        DNESITY15(15)
     }
 
-    public static enum DIRECTION {
+    enum class DIRECTION(val value: Int) {
         FORWARD(0),
-        BACKWARD(1);
-
-        private final int value;
-
-        private DIRECTION(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        BACKWARD(1)
     }
 
-    public static enum EEC {
+    enum class EEC(val value: String) {
         LEVEL_L("L"),
         LEVEL_M("M"),
         LEVEL_Q("Q"),
-        LEVEL_H("H");
-
-        private final String value;
-
-        private EEC(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
+        LEVEL_H("H")
     }
 
-    public static enum FONTMUL {
+    enum class FONTMUL(val value: Int) {
         MUL_1(1),
         MUL_2(2),
         MUL_3(3),
@@ -494,20 +457,10 @@ public class LabelCommand {
         MUL_7(7),
         MUL_8(8),
         MUL_9(9),
-        MUL_10(10);
-
-        private final int value;
-
-        private FONTMUL(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        MUL_10(10)
     }
 
-    public static enum FONTTYPE {
+    enum class FONTTYPE(val value: String) {
         FONT_1("1"),
         FONT_2("2"),
         FONT_3("3"),
@@ -518,95 +471,39 @@ public class LabelCommand {
         FONT_8("8"),
         SIMPLIFIED_CHINESE("TSS24.BF2"),
         TRADITIONAL_CHINESE("TST24.BF2"),
-        KOREAN("K");
-
-        private final String value;
-
-        private FONTTYPE(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
+        KOREAN("K")
     }
 
-    public static enum FOOT {
+    enum class FOOT(val value: Int) {
         F2(0),
-        F5(1);
-
-        private final int value;
-
-        private FOOT(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        F5(1)
     }
 
-    public static enum MIRROR {
+    enum class MIRROR(val value: Int) {
         NORMAL(0),
-        MIRROR(1);
-
-        private final int value;
-
-        private MIRROR(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        MIRROR(1)
     }
 
-    public static enum READABEL {
+    enum class READABEL(val value: Int) {
         DISABLE(0),
-        EANBEL(1);
-
-        private final int value;
-
-        private READABEL(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        EANBEL(1)
     }
 
-    public static enum ROTATION {
+    enum class ROTATION(val value: Int) {
         ROTATION_0(0),
         ROTATION_90(90),
         ROTATION_180(180),
-        ROTATION_270(270);
-
-        private final int value;
-
-        private ROTATION(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return this.value;
-        }
+        ROTATION_270(270)
     }
 
-    public static enum SPEED {
-        SPEED1DIV5(1.5F),
-        SPEED2(2.0F),
-        SPEED3(3.0F),
-        SPEED4(4.0F);
+    enum class SPEED(val value: Float) {
+        SPEED1DIV5(1.5f),
+        SPEED2(2.0f),
+        SPEED3(3.0f),
+        SPEED4(4.0f)
+    }
 
-        private final float value;
-
-        private SPEED(float value) {
-            this.value = value;
-        }
-
-        public float getValue() {
-            return this.value;
-        }
+    companion object {
+        private const val DEBUG_TAG = "LabelCommand"
     }
 }

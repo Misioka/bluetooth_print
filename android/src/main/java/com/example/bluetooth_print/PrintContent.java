@@ -1,19 +1,15 @@
 package com.example.bluetooth_print;
 
-import static android.src.main.java.com.example.bluetooth_print.StringUtilsKt.byteArrayToVector;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.src.main.java.com.example.bluetooth_print.EscCommand;
+import android.src.main.java.com.example.bluetooth_print.LabelCommand;
 import android.src.main.java.com.example.bluetooth_print.PrintDocument;
 import android.src.main.java.com.example.bluetooth_print.PrinterType;
 import android.util.Log;
 import android.util.Base64;
-import android.src.main.java.com.example.bluetooth_print.LabelCommand;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -47,11 +43,16 @@ public class PrintContent {
                         "ščřžČŘŽÝ"),
                 PrintDocument.Font.HEADLINE, 0, Paint.Align.LEFT);
 
-        doc.appendLine();
+        document.appendLine(PrintDocument.Font.NORMAL.getCharHeight() / 4);
 
-        doc.appendLine();
+        document.appendLine(PrintDocument.Font.NORMAL.getCharHeight() / 4);
 
-        return byteArrayToVector(document.generatePrinterCommands(1, PrinterType.PTP, false));
+        byte[] byteArray = document.generatePrinterCommands(1, PrinterType.PTP, false);
+        Vector<Byte> byteVector = new Vector<>(byteArray.length);
+        for (byte b : byteArray) {
+            byteVector.add(b);
+        }
+        return byteVector;
 
         // {type:'text|barcode|qrcode|image', content:'', size:4, align: 0|1|2, weight: 0|1, width:0|1, height:0|1, underline:0|1, linefeed: 0|1}
 //        for (Map<String, Object> m : list) {
