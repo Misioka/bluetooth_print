@@ -26,9 +26,8 @@ class LineText {
       this.weight = 0, //0,1
       this.width = 0, //0,1
       this.height = 0, //0,1
-      this.absolutePos = 0,
-      this.relativePos = 0,
-      this.fontZoom = 1,
+      this.relativeX = 0, //any number
+      this.fontZoom = 1, //1-8
       this.underline = 0, //0,1
       this.linefeed = 0, //0,1
       this.x = 0,
@@ -42,7 +41,7 @@ class LineText {
   static const int ALIGN_CENTER = 1;
   static const int ALIGN_RIGHT = 2;
 
-  /// print type ,inculde['text','barcode','qrcode','image']
+  /// print type ,include['text','barcode','qrcode','image']
   final String? type;
 
   /// ['text','barcode','qrcode','image'] need print content
@@ -59,11 +58,8 @@ class LineText {
   final int? width;
   final int? height;
 
-  /// ['text'] absolute position from line begin
-  final int? absolutePos;
-
-  /// ['text'] relative position from last content
-  final int? relativePos;
+  /// ['text','barcode','qrcode','image'] relative position from last content
+  final int? relativeX;
 
   /// ['text'] font zoom level, include 1-8
   final int? fontZoom;
@@ -74,7 +70,10 @@ class LineText {
   /// ['text'] print linebreak
   final int? linefeed;
 
+  /// sets absolute position for receipt and label print mode
   final int? x;
+
+  /// sets absolute position only for label print mode
   final int? y;
 
   factory LineText.fromJson(Map<String, dynamic> json) =>

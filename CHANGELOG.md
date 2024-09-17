@@ -1,3 +1,11 @@
+## 4.4.0
+
+* allow absolute and relative positions for all content types
+
+## 4.3.0
+
+* kanji mode anbled by default 
+
 ## 4.2.0
 
 * opt permission check

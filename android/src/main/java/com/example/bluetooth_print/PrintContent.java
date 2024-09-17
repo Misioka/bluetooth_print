@@ -27,7 +27,7 @@ public class PrintContent {
 
         //初始化打印机
         esc.addInitializePrinter();
-
+        // setup printer kanji mode
         esc.addUserCommand(new byte[]{0x1c, 0x26, 0x1b, 0x39, 0x01});
         esc.addPrintAndFeedLines((byte) 1);
 
@@ -45,6 +45,15 @@ public class PrintContent {
             int height = (int) (m.get("height") == null ? 0 : m.get("height"));
             int underline = (int) (m.get("underline") == null ? 0 : m.get("underline"));
             int linefeed = (int) (m.get("linefeed") == null ? 0 : m.get("linefeed"));
+            int x = (int) (m.get("x") == null ? 0 : m.get("x"));
+            short aPos = (short) x;
+            int relativeX = (int) (m.get("relativeX") == null ? 0 : m.get("relativeX"));
+            short rPos = (short) relativeX;
+
+            // 设置绝对打印位置，将当前打印位置设置到距离行首 n* hor_motion_unit 点
+            esc.addSetAbsolutePrintPosition(aPos);
+            // 设置相对打印位置，将打印位置设置到距当前位置 n 点处
+            esc.addSetRelativePrintPositon(rPos);
 
             EscCommand.ENABLE emphasized = weight == 0 ? EscCommand.ENABLE.OFF : EscCommand.ENABLE.ON;
             EscCommand.ENABLE doublewidth = width == 0 ? EscCommand.ENABLE.OFF : EscCommand.ENABLE.ON;
@@ -55,17 +64,8 @@ public class PrintContent {
             esc.addSelectJustification(align == 0 ? EscCommand.JUSTIFICATION.LEFT : (align == 1 ? EscCommand.JUSTIFICATION.CENTER : EscCommand.JUSTIFICATION.RIGHT));
 
             if ("text".equals(type)) {
-                int x = (int) (m.get("x") == null ? 0 : m.get("x"));
-                int relativeX = (int) (m.get("relativeX") == null ? 0 : m.get("relativeX"));
                 int fontZoom = (int) (m.get("fontZoom") == null ? 1 : m.get("fontZoom"));
-                short aPos = (short) x;
-                short rPos = (short) relativeX;
                 Log.e(TAG, "******************* x: " + aPos + ", relativeX: " + rPos + ", fontZoom: " + fontZoom);
-
-                // 设置绝对打印位置，将当前打印位置设置到距离行首 n* hor_motion_unit 点
-                esc.addSetAbsolutePrintPosition(aPos);
-                // 设置相对打印位置，将打印位置设置到距当前位置 n 点处
-                esc.addSetRelativePrintPositon(rPos);
                 // 设置为倍高倍宽
                 esc.addSelectPrintModes(EscCommand.FONT.FONTA, emphasized, doubleheight, doublewidth, isUnderline);
                 if (fontZoom > 1) {

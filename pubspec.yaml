@@ -1,10 +1,10 @@
-name: bluetooth_print
+name: bluetooth_print_kanji
 description: BluetoothPrint is a bluetooth plugin to help developers build bluetooth thermal printer apps for both iOS and Android.
-version: 4.2.0
-homepage: https://github.com/thon-ju/bluetooth_print
+version: 4.4.0
+homepage: https://github.com/Misioka/bluetooth_printt
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.12.0 <4.0.0'
   flutter: ">=1.12.13+hotfix.6"
 
 dependencies:
