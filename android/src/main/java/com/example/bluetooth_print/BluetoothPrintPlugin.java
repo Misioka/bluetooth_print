@@ -216,11 +216,25 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       case "printTest":
         printTest(result);
         break;
+      case "getConnState":
+        getConnState(result);
+        break;
+      case "getDevices":
+        getDevices(result);
+        break;
       default:
         result.notImplemented();
         break;
     }
 
+  }
+
+  private void getConnState(Result result) {
+    final DeviceConnFactoryManager deviceConnFactoryManager = DeviceConnFactoryManager.getDeviceConnFactoryManagers().get(curMacAddress);
+    if (deviceConnFactoryManager == null || !deviceConnFactoryManager.getConnState()) {
+      result.error("not connect", "state not right", null);
+    }
+    result.success(deviceConnFactoryManager.getConnState());
   }
 
   private void getDevices(Result result){

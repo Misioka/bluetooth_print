@@ -1,3 +1,7 @@
+## 4.5.0
+
+* Add option to get devices and connection status
+
 ## 4.4.0
 
 * allow absolute and relative positions for all content types
