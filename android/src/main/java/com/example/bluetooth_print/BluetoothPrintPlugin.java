@@ -222,6 +222,9 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       case "getDevices":
         getDevices(result);
         break;
+      case "getCurrentDevice":
+        result.success(curMacAddress);
+        break;
       default:
         result.notImplemented();
         break;

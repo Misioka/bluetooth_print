@@ -1,3 +1,7 @@
+## 4.6.0
+
+* Fix types
+
 ## 4.5.0
 
 * Add option to get devices and connection status
