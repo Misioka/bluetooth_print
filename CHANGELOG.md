@@ -1,4 +1,16 @@
-## 4.6.0
+## 4.9.0
+
+* Response after connection is finished
+
+* ## 4.8.0
+
+* Remove device connected state
+
+* ## 4.7.0
+
+* Add device connected state
+
+* ## 4.6.0
 
 * Fix types
 

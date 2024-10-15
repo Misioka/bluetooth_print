@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * BluetoothPrintPlugin
@@ -347,6 +348,7 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       this.curMacAddress = address;
 
       disconnect();
+      CountDownLatch latch = new CountDownLatch(1);
 
       new DeviceConnFactoryManager.Build()
               //设置连接方式
@@ -360,11 +362,22 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
       threadPool.addSerialTask(new Runnable() {
         @Override
         public void run() {
-          DeviceConnFactoryManager.getDeviceConnFactoryManagers().get(address).openPort();
+
+          try {
+            DeviceConnFactoryManager.getDeviceConnFactoryManagers().get(address).openPort();
+          } finally {
+            latch.countDown();
+          }
+
         }
       });
 
-      result.success(true);
+      try {
+        latch.await(); // Wait for the task to complete
+        result.success(true);
+      } catch (InterruptedException e) {
+        result.error("thread_pool_error", "Thread pool was interrupted", e);
+      }
     } else {
       result.error("******************* invalid_argument", "argument 'address' not found", null);
     }
