@@ -138,27 +138,33 @@ public class DeviceConnFactoryManager {
     /**
      * 打开端口
      */
-    public void openPort() {
+    public boolean openPort() {
         DeviceConnFactoryManager deviceConnFactoryManager = deviceConnFactoryManagers.get(macAddress);
         if(deviceConnFactoryManager == null){
-            return;
+            return false;
         }
 
-        deviceConnFactoryManager.isOpenPort = false;
-        if (deviceConnFactoryManager.connMethod == CONN_METHOD.BLUETOOTH) {
-            mPort = new BluetoothPort(macAddress);
-            isOpenPort = deviceConnFactoryManager.mPort.openPort();
-        }
-
-        //端口打开成功后，检查连接打印机所使用的打印机指令ESC、TSC
-        if (isOpenPort) {
-            queryCommand();
-        } else {
-            if (this.mPort != null) {
-                this.mPort=null;
+        try {
+            deviceConnFactoryManager.isOpenPort = false;
+            if (deviceConnFactoryManager.connMethod == CONN_METHOD.BLUETOOTH) {
+                mPort = new BluetoothPort(macAddress);
+                isOpenPort = deviceConnFactoryManager.mPort.openPort();
             }
 
+            //端口打开成功后，检查连接打印机所使用的打印机指令ESC、TSC
+            if (isOpenPort) {
+                queryCommand();
+                return true;
+            } else {
+                if (this.mPort != null) {
+                    this.mPort = null;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     /**

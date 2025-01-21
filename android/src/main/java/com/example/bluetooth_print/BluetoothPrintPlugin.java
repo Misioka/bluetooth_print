@@ -363,18 +363,21 @@ public class BluetoothPrintPlugin implements FlutterPlugin, ActivityAware, Metho
         @Override
         public void run() {
 
-          try {
-            DeviceConnFactoryManager.getDeviceConnFactoryManagers().get(address).openPort();
-          } finally {
-            latch.countDown();
+          final boolean connected =  DeviceConnFactoryManager.getDeviceConnFactoryManagers().get(address).openPort();
+          if (!connected) {
+            threadPool = null;
           }
-
+          latch.countDown();
         }
       });
 
       try {
         latch.await(); // Wait for the task to complete
-        result.success(true);
+        if (threadPool == null) {
+          result.error("thread_pool_error", "Thread pool was interrupted", "not connected");
+        } else {
+          result.success(true);
+        }
       } catch (InterruptedException e) {
         result.error("thread_pool_error", "Thread pool was interrupted", e);
       }

@@ -1,3 +1,11 @@
+## 4.11.0
+
+* Fix open port to reject on error
+
+* ## 4.10.0
+
+* Add namespace to the plugin
+
 ## 4.9.0
 
 * Response after connection is finished
